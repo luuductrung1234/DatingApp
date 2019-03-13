@@ -27,6 +27,7 @@ namespace DatingApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine(">>> Run default ConfigureServices()");
             Console.WriteLine(Configuration.GetConnectionString("DefaultConnection"));
 
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -34,7 +35,25 @@ namespace DatingApp.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddCors();
+
+            services.AddScoped<IAuthRepository, AuthRepository>();
         }
+        
+        public void ConfigureMacDevelopmentServices(IServiceCollection services)
+        {
+            Console.WriteLine(">>> Run MacDevelopment ConfigureServices()");
+            Console.WriteLine(Configuration.GetConnectionString("DefaultConnection"));
+
+            services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddCors();
+
+            services.AddScoped<IAuthRepository, AuthRepository>();
+        }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
